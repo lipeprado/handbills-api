@@ -7,3 +7,5 @@
 - postgres
 - Knex
 - Bookshelf
+
+run `docker-compose up --build`
