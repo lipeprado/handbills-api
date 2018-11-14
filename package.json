@@ -1,0 +1,9 @@
+{
+  "name": "handbills-api",
+  "version": "1.0.0",
+  "description": "A Cool App to make your bills control much more easily.",
+  "main": "index.js",
+  "repository": "git@github.com:lipeprado/handbills-api.git",
+  "author": "Filipe Prado @lipeprado",
+  "license": "MIT"
+}
