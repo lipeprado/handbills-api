@@ -14,7 +14,7 @@ module.exports = {
       password: config.get(process.env.NODE_ENV).DB_PASS,
     },
     migrations: {
-      tableName: 'migrations',
+      tableName: 'migrations/',
     },
     seeds: {
       directory: `${__dirname}/seeds/`,
