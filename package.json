@@ -5,5 +5,47 @@
   "main": "index.js",
   "repository": "git@github.com:lipeprado/handbills-api.git",
   "author": "Filipe Prado @lipeprado",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist",
+    "start": "NODE_ENV=development nodemon src/index.js --exec babel-node",
+    "db:development": "./dbs/development/script_db.sh",
+    "run:migrations": "./node_modules/.bin/knex migrate:latest",
+    "run:seeds": "./node_modules/.bin/knex seed:run",
+    "env:dev": "NODE_ENV=development npm run db:development && NODE_ENV=development npm run run:migrations && NODE_ENV=development npm run run:seeds"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "bookshelf-bcrypt": "^3.0.2",
+    "bookshelf-uuid": "^1.0.0",
+    "express": "^4.16.4",
+    "registry": "^0.3.0",
+    "visibility": "0.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "basic-logger": "^0.4.4",
+    "bookshelf": "^0.13.3",
+    "compression": "^1.7.3",
+    "config": "^2.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express-status-monitor": "^1.2.3",
+    "express-validation": "^1.0.2",
+    "helmet": "^3.15.0",
+    "http-status": "^1.3.1",
+    "joi": "^14.0.6",
+    "knex": "^0.15.2",
+    "method-override": "^3.0.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.6",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.6.1",
+    "pretty-error": "^2.1.1",
+    "request": "^2.88.0"
+  }
 }
