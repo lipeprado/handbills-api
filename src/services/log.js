@@ -12,11 +12,7 @@ const isDev = process.env.NODE_ENV === 'development';
 // eslint-disable-next-line no-unused-vars
 export default function logErrorService(err, req, res, next) {
   if (!err) {
-    return new APIError(
-      'Error with the server!',
-      HTTPStatus.INTERNAL_SERVER_ERROR,
-      true,
-    );
+    return new APIError('Error with the server!', HTTPStatus.INTERNAL_SERVER_ERROR, true);
   }
 
   if (isDev) {
@@ -38,7 +34,7 @@ export default function logErrorService(err, req, res, next) {
     if (Array.isArray(errors)) {
       error.errors = RequiredError.makePretty(errors);
     } else {
-      Object.keys(errors).forEach(key => {
+      Object.keys(errors).forEach((key) => {
         error.errors[key] = errors[key].message;
       });
     }

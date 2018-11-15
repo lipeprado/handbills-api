@@ -15,9 +15,7 @@ routes.use('/users', UserRoutes);
 routes.use('/auth', AuthRoutes);
 routes.use('/bills', BillsRoutes);
 
-routes.all('*', (req, res, next) =>
-  next(new APIError('Not Found!', HTTPStatus.NOT_FOUND, true)),
-);
+routes.all('*', (req, res, next) => next(new APIError('Not Found!', HTTPStatus.NOT_FOUND, true)));
 
 routes.use(logErrorService);
 
