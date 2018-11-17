@@ -1,21 +1,15 @@
 import HTTPSTATUS from 'http-status';
 
-import BillsModel from '../models/bills.model';
-import validBill from '../services/validation';
-import queries from '../queries';
+import queries from '../queries/bills.queries';
 
-const updateBills = async (id, body, res) => {
-  try {
-    const billsUpdated = await queries.update(id, body);
-    res.status(HTTPSTATUS.OK).json({ billsUpdated });
-  } catch (error) {
-    res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Something goes wrong' });
-  }
-};
+// Helpers
+import validBill from '../services/validation';
+import isAllowed from '../services/isAllowed';
 
 export const index = async (req, res) => {
+  const { id } = req.user.data;
   try {
-    const bills = await BillsModel.forge().fetchAll();
+    const bills = await queries.getBillsByUserId(id);
     return res.status(HTTPSTATUS.OK).json({ bills });
   } catch (error) {
     return res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Algo errado aconteceu.' });
@@ -23,43 +17,60 @@ export const index = async (req, res) => {
 };
 
 export const store = async (req, res) => {
-  const { id } = req.user.data;
-  const {
-    title, value, status, expire,
-  } = req.body;
+  const currentUserID = req.user.data.id;
   const newBill = {
-    userId: id,
-    title,
-    value,
-    status,
-    expire,
+    ...req.body,
+    userId: currentUserID,
   };
   if (validBill(req.body)) {
-    const bill = await new BillsModel(newBill).save();
-    res.status(HTTPSTATUS.OK).json({ bill });
-  } else {
-    res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Invalid Bill' });
+    const bill = await queries.create(newBill);
+    return res.status(HTTPSTATUS.OK).json({ bill: bill[0], message: 'Bill created with success.' });
   }
+  return res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Invalid Bill' });
 };
 
 export const update = async (req, res) => {
-  // TODO: Valida se o usuario que está Atualizando é o Dono da Bill
   const { id } = req.params;
-
-  if (validBill(req.body)) {
-    updateBills(id, req.body, res);
+  const currentUserID = req.user.data.id;
+  const bill = await queries.getOne(id);
+  if (!bill) {
+    res.status(HTTPSTATUS.OK).json({ message: 'Bill not exist.' });
+    return;
+  }
+  const isOwner = await isAllowed(bill.userId, currentUserID);
+  if (isOwner) {
+    if (validBill(req.body)) {
+      try {
+        const billsUpdated = await queries.update(id, req.body);
+        res.status(HTTPSTATUS.OK).json({ billsUpdated });
+      } catch (error) {
+        res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Something goes wrong' });
+      }
+    } else {
+      res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Invalid Bill' });
+    }
   } else {
-    res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Invalid Bill' });
+    res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: 'User not authorized' });
   }
 };
 
 export const destroy = async (req, res) => {
-  // TODO: Valida se o usuario que está deletando é o Dono da Bill
   const { id } = req.params;
-  if (validBill(id)) {
-    await queries.delete(id, req.body);
-    res.status(HTTPSTATUS.OK).json({ message: 'Bill deleted with success.' });
+  const currentUserID = req.user.data.id;
+  const bill = await queries.getOne(id);
+  if (!bill) {
+    res.status(HTTPSTATUS.OK).json({ message: 'Bill not exist.' });
+    return;
+  }
+  const isOwner = await isAllowed(bill.userId, currentUserID);
+  if (isOwner) {
+    try {
+      await queries.delete(id, req.body);
+      res.status(HTTPSTATUS.OK).json({ message: 'Bill deleted with success.' });
+    } catch (error) {
+      res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Something goes wrong' });
+    }
   } else {
-    res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Something goes wrong.' });
+    res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: 'User not authorized.' });
   }
 };
