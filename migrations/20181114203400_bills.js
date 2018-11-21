@@ -1,3 +1,4 @@
+/* eslint-disable */
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('bills', table => {
     table
@@ -8,6 +9,8 @@ exports.up = function(knex, Promise) {
     table.string('title', 50).notNullable();
     table.float('value');
     table.timestamp('expire').defaultTo(knex.fn.now());
+    table.string('month').notNullable();
+    table.string('year').notNullable();
     table.boolean('status').defaultTo(false);
     table
       .uuid('userId')

@@ -8,8 +8,9 @@ import isAllowed from '../services/isAllowed';
 
 export const index = async (req, res) => {
   const { id } = req.user.data;
+
   try {
-    const bills = await queries.getBillsByUserId(id);
+    const bills = await queries.getBillsByUserId(id, req.query);
     return res.status(HTTPSTATUS.OK).json({ bills });
   } catch (error) {
     return res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Algo errado aconteceu.' });

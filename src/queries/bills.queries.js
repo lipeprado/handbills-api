@@ -1,11 +1,17 @@
 import uuidv1 from 'uuid/v1';
+
 // the connection!
 const knex = require('../db');
 
 module.exports = {
-  getBillsByUserId(userId) {
+  getBillsByUserId(id, date) {
+    console.log({ date });
     return knex('bills')
-      .where('userId', userId)
+      .where({
+        userId: id,
+        month: date.month,
+        year: date.year,
+      })
       .orderBy('created_at', 'desc');
   },
   create(bill) {
