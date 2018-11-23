@@ -5,7 +5,6 @@ const knex = require('../db');
 
 module.exports = {
   getBillsByUserId(id, date) {
-    console.log({ date });
     return knex('bills')
       .where({
         userId: id,
@@ -16,7 +15,18 @@ module.exports = {
   },
   create(bill) {
     return knex('bills')
-      .returning(['id'])
+      .returning([
+        'id',
+        'title',
+        'value',
+        'expire',
+        'status',
+        'userId',
+        'created_at',
+        'updated_at',
+        'month',
+        'year',
+      ])
       .insert({ ...bill, id: uuidv1() });
   },
   update(id, bills) {

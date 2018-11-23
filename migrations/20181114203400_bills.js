@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       .unique()
       .primary();
     table.string('title', 50).notNullable();
-    table.float('value');
+    table.bigInteger('value');
     table.timestamp('expire').defaultTo(knex.fn.now());
     table.string('month').notNullable();
     table.string('year').notNullable();

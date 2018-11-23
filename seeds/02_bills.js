@@ -8,7 +8,7 @@ exports.seed = function(knex, Promise) {
         {
           id: '85167096-edd5-11e8-8eb2-f2801f1b9fd1',
           title: 'Conta da Vivo',
-          value: 69.9,
+          value: 6990,
           expire: '2018-11-15T09:00:00.000Z',
           month: '11',
           year: '2018',
@@ -18,7 +18,7 @@ exports.seed = function(knex, Promise) {
         {
           id: '85167352-edd5-11e8-8eb2-f2801f1b9fd1',
           title: 'Magazine Luiza',
-          value: 138,
+          value: 13800,
           expire: '2018-11-15T09:00:00.000Z',
           month: '11',
           year: '2018',
@@ -28,7 +28,7 @@ exports.seed = function(knex, Promise) {
         {
           id: '851674a6-edd5-11e8-8eb2-f2801f1b9fd1',
           title: 'Lojas Camargos',
-          value: 241,
+          value: 24150,
           expire: '2018-12-15T09:00:00.000Z',
           month: '12',
           year: '2018',
@@ -38,7 +38,7 @@ exports.seed = function(knex, Promise) {
         {
           id: '8516764a-edd5-11e8-8eb2-f2801f1b9fd1',
           title: 'Prestação do Carro',
-          value: 633.9,
+          value: 63399,
           expire: '2018-12-10T09:00:00.000Z',
           month: '12',
           year: '2018',
@@ -48,7 +48,7 @@ exports.seed = function(knex, Promise) {
         {
           id: '85167c80-edd5-11e8-8eb2-f2801f1b9fd1',
           title: 'Revisão Carro',
-          value: 275,
+          value: 27570,
           expire: '2018-11-10T09:00:00.000Z',
           month: '11',
           year: '2018',
