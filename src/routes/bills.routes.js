@@ -11,6 +11,7 @@ const routes = express.Router();
 routes.get('/', authVerify, BillsController.index);
 routes.post('/', authVerify, BillsController.store);
 routes.put('/:id', authVerify, BillsController.update);
+routes.patch('/:id', authVerify, BillsController.changeStatus);
 routes.delete('/:id', authVerify, BillsController.destroy);
 
 export default routes;

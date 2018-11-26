@@ -30,6 +30,23 @@ export const store = async (req, res) => {
   return res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Invalid Bill' });
 };
 
+export const changeStatus = async (req, res) => {
+  const { id } = req.params;
+  const currentUserID = req.user.data.id;
+  const bill = await queries.getOne(id);
+  const isOwner = await isAllowed(bill.userId, currentUserID);
+  if (isOwner) {
+    try {
+      const billsUpdated = await queries.updateStatus(id, bill.status);
+      res.status(HTTPSTATUS.OK).json({ billsUpdated });
+    } catch (error) {
+      res.status(HTTPSTATUS.BAD_REQUEST).json({ message: 'Something goes wrong' });
+    }
+  } else {
+    res.status(HTTPSTATUS.UNAUTHORIZED).json({ message: 'User not authorized' });
+  }
+};
+
 export const update = async (req, res) => {
   const { id } = req.params;
   const currentUserID = req.user.data.id;

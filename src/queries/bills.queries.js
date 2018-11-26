@@ -15,24 +15,19 @@ module.exports = {
   },
   create(bill) {
     return knex('bills')
-      .returning([
-        'id',
-        'title',
-        'value',
-        'expire',
-        'status',
-        'userId',
-        'created_at',
-        'updated_at',
-        'month',
-        'year',
-      ])
+      .returning('*')
       .insert({ ...bill, id: uuidv1() });
   },
   update(id, bills) {
     return knex('bills')
       .where('id', id)
       .update(bills, '*');
+  },
+  updateStatus(id, status) {
+    return knex('bills')
+      .where('id', id)
+      .returning('*')
+      .update('status', !status);
   },
   getOne(id) {
     return knex('bills')
